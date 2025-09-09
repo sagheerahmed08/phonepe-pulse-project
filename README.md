@@ -1,10 +1,8 @@
-# 📊 PhonePe Transaction Insights
+<img width="600" height="182" alt="0625cbe3-4e88-4381-892e-c048a70cb083_removalai_preview" src="https://github.com/user-attachments/assets/56ecc3b8-2c75-412c-baea-7913bfa45a01" />
 
-**Domain:** Finance / Payment Systems  
-**Author:** Sagheer Ahmed  
-
----
-
+# 📊PhonePe Transaction Insights
+Domain:Finance / Payment Systems  
+Author: Sagheer Ahmed  
 ## Introduction
 
 The PhonePe Transaction Insights Project is a data-driven analytics and visualization platform built using the PhonePe Pulse dataset. The project extracts, transforms, and analyzes nationwide digital transaction data to uncover meaningful insights into India’s evolving digital payments ecosystem.
@@ -279,6 +277,7 @@ Recommended Improvements
   
   Deploy on Streamlit Cloud / Docker
 ```
+<img width="707" height="353" alt="Guvi-removebg-preview" src="https://github.com/user-attachments/assets/3552cc26-f9b7-4f73-94db-e44cec6358e9" />
 
 License
 
