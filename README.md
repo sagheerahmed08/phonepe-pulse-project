@@ -42,18 +42,18 @@ The project helps **business users, product managers, and growth teams** identif
 ## 📂 Project Structure
 ```phonepe-pulse-project
 ├─ src/
-├─ ETL.py
-├─ dashboard.py
+  ├─ ETL.py
+  ├─ dashboard.py
 ├─ Docs/
-│ ├─ Documentation.md
-│ └─ presentation.pptx
+  │ ├─ Documentation.md
+  │ └─ presentation.pptx
 ├─ Pulse/
-│ ├─ data/
-│ │ ├─ aggregated/
-│ │ ├─ map/
-│ │ └─ top/
+   ├─ data/
+   │ ├─ aggregated/
+   │ ├─ map/
+   │ └─ top/
 ├─ Sql/
-│ └─ create_tables.sql
+   └─ create_tables.sql
 ├─ README.md
 └─ requirements.txt
 ```
