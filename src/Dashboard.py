@@ -2535,7 +2535,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
     total_appopens = df_filtered["AppOpens"].sum()
     engagement_ratio = round(total_appopens / total_users, 2) if total_users > 0 else 0
 
-    st.markdown("### 📌 Key Metrics")
+    st.markdown("### Key Metrics")
     col1, col2, col3 = st.columns(3)
     col1.metric("Total Registered Users", f"{total_users:,}")
     col2.metric("Total App Opens", f"{total_appopens:,}")
@@ -2591,7 +2591,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
         st.plotly_chart(fig, use_container_width=True)
 
     # Year-wise Bar Charts
-    st.markdown("### 📊 Year-wise Trends")
+    st.markdown("### Year-wise Trends")
 
     yearly_stats = Map_user.groupby("Years").agg({
         "RegisteredUser": "sum",
@@ -2622,7 +2622,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
         fig3.update_traces(textposition="outside")
         st.plotly_chart(fig3, use_container_width=True)
 
-    st.markdown("### 📊 Quarter-wise Trends")
+    st.markdown("### Quarter-wise Trends")
 
     quarter_stats = Map_user.groupby(["Quarter"]).agg({
         "RegisteredUser": "sum",
@@ -2703,8 +2703,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
         hover_data=["RegisteredUser"]
     )
     st.plotly_chart(fig2, use_container_width=True)
-
-
+    
     st.markdown("### User loyalty Index (App Opens vs Users)")
     fig3 = px.scatter(
         state_engagement,
@@ -2791,7 +2790,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
     # Brand Share (Aggre_user)
     brand_share = Aggre_user.groupby("Brand")["Transaction_count"].sum().reset_index()
 
-    st.markdown("### 📱 Brand-wise User Engagement")
+    st.markdown("### Brand-wise User Engagement")
     fig4 = px.pie(
         brand_share,
         names="Brand",
@@ -2946,9 +2945,7 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
             st.plotly_chart(fig5, use_container_width=True)
             
             st.warning("App Open data for Pincode is Unavailable")
-
-
-
+            
     # Transaction Insights (State / District / Pincode)
 
     st.markdown("### Top 10 Transaction Amount and Transaction Count")
