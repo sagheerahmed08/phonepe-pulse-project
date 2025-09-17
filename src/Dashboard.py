@@ -551,7 +551,7 @@ def map_user_total_registered_user_and_app_open(df_transaction):
     sel_state = st.selectbox("Select State", states_of_map_user, key="state_select_map_user")
     year_of_map_user = df_transaction["Years"].unique()
     sel_year = st.selectbox("Select Year", year_of_map_user, key="year_select_map_user")
-    # Filter for the given year and state
+   
     df = df_transaction[
         (df_transaction["Years"] == sel_year) &
         (df_transaction["States"] == sel_state)
@@ -937,7 +937,6 @@ def Top_use_pie(df_transaction):
     sel_year = st.selectbox("Select Year", Top_user_Years, key="year_Top_use_pie")
     sel_state = st.selectbox("Select State", Top_user_States, key="state_Top_use_pie")
     sel_quarter = st.selectbox("Select Quarter", Top_user_Quarter, key="quarter_Top_use_pie")
-    # Filter data
     filtered_df = df_transaction[
         (df_transaction["Years"] == sel_year) &
         (df_transaction["Quarter"] == sel_quarter) &
@@ -1011,10 +1010,6 @@ def Top_Registered_by_state_and_pincode(df_user):
 def ques1(df):
     st.write("*****************************************************************************************************")
     st.header("Transaction Type Trends Analysis")
-
-    
-    # India Map: Most Used Transaction Type by State
-    
     st.subheader("Most Used Transaction Type by State")
     year_list_map = ["All Years"] + sorted(df["Years"].unique().tolist())
     quarter_list_map = ["All Quarters"] + sorted(df["Quarter"].unique().tolist())
@@ -1026,7 +1021,7 @@ def ques1(df):
         map_df = map_df[map_df["Years"] == int(sel_year_map)]
     if sel_quarter_map != "All Quarters":
         map_df = map_df[map_df["Quarter"] == int(sel_quarter_map)]
-    # Most used transaction type per state
+        
     most_used = (
         map_df.groupby(["States", "Transaction_type"], as_index=False)["Transaction_amount"].sum()
         .sort_values(["States", "Transaction_amount"], ascending=[True, False])
@@ -1422,22 +1417,11 @@ def ques2(Aggre_user, Map_user):
         Aggre_user["Years"] = Aggre_user["Years"].astype(str) 
         
         brand_trend = ( Aggre_user[Aggre_user["Brand"] == selected_brand].groupby(["Years", "Quarter"])["Transaction_count"].sum() .reset_index() ) 
-        fig3 = px.line( 
-                       brand_trend, 
-                       x="Years", 
-                       y="Transaction_count", 
-                       color="Quarter", 
-                       line_group="Quarter", 
-                       title=f"Registered Users Trend for {selected_brand}", 
-                       markers=True) 
-        fig3.update_xaxes(type="category")
-        st.plotly_chart(fig3, use_container_width=True)
-
+        plot_line(brand_trend, "Years", "Transaction_count", f"Registered Users Trend for {selected_brand}", color="Quarter")
+    
     # Engagement by Brand
     st.subheader("Device Brand Engagement Comparison")
     brand_state = Aggre_user.groupby("Brand")["Transaction_count"].sum().reset_index()
-    # engagement per brand cannot be taken from Map_user (no brand column),
-    # so we approximate with Transaction_Percentage from Aggre_user
     brand_state["Engagement_Score"] = (brand_state["Transaction_count"] * (Aggre_user.groupby("Brand")["Transaction_Percentage"].mean().values) )
 
     fig5 = px.scatter(
@@ -1450,15 +1434,14 @@ def ques2(Aggre_user, Map_user):
         hover_data=["Brand"]
     )
     st.plotly_chart(fig5, use_container_width=True)
-    # ---------- User in each states ----------
+    
+    # User in each states
     st.subheader(" States by Registered Users / App Open ")
     years = ["All"] + sorted(Map_user["Years"].unique().tolist())
     selected_year = st.selectbox("Select Year", years, key="user_year")
 
     quarters = ["All"] + sorted(Map_user["Quarter"].unique().tolist())
     selected_quarter = st.selectbox("Select Quarter", quarters, key="user_quarter")
-
-    # Apply filters
     filtered_data = Map_user.copy()
     if selected_year != "All":
         filtered_data = filtered_data[filtered_data["Years"] == selected_year]
@@ -1605,7 +1588,7 @@ def ques3(df_agg, df_map, df_top, Top_user, Map_user):
     else:
         agg_filt["States"] = agg_filt["States"].str.title()
         with st.spinner("Loading map..."):
-            tab1,tab2 = st.tabs(["Transaction amount" , "Transaction count"])
+            tab1,tab2 = st.tabs(["Insurance amount" , "Insurance count"])
             with tab1:
                 col1,col2 = st.columns(2)
                 with col1:
@@ -1625,8 +1608,8 @@ def ques3(df_agg, df_map, df_top, Top_user, Map_user):
                     )
                     fig_map.update_geos(fitbounds="locations", visible=False)
                     st.plotly_chart(fig_map, use_container_width=True)
-                plot_bar(map_df.nlargest(10, "Transaction_amount"), "States", "Transaction_amount", "Top 10 States by Transaction Amount", color="Transaction_amount")
-                plot_bar(map_df.nsmallest(10, "Transaction_amount"), "States", "Transaction_amount", "Bottom 10 States by Transaction Amount", color="Transaction_amount")
+                plot_bar(map_df.nlargest(10, "Transaction_amount"), "States", "Transaction_amount", "Top 10 States by Insurance Amount", color="Transaction_amount")
+                plot_bar(map_df.nsmallest(10, "Transaction_amount"), "States", "Transaction_amount", "Bottom 10 States by Insurance Amount", color="Transaction_amount")
                 with col2:
                     fig1 = px.bar(
                         map_df,
@@ -2509,7 +2492,7 @@ def ques4(df_transaction, df_user):
         plot_bar(top_state_Average, "States", "Average Usage", f'Top 5 Average usage by user ', color="Average Usage")
         plot_bar(bottom_state_Average, "States", "Average Usage", f'Bottom 5 Average usage by user ', color="Average Usage")
     with col2:
-        if df_state_filt["Average Usage"].sum() == 0:   # check if usage = 0
+        if df_state_filt["Average Usage"].sum() == 0:   
             st.warning(f"No data available for {selected_year}", icon="⚠️")
         else:
             plot_bar(df_state_filt, "States", "Average Usage", f'Average usage by user - {selected_year}', color="Average Usage")
@@ -2707,9 +2690,6 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-
-    # Growth Trend of Users
-
     growth = Map_user.groupby(["Years", "Quarter"]).agg({"RegisteredUser":"sum"}).reset_index()
     growth["Period"] = growth["Years"].astype(str) + "-Q" + growth["Quarter"].astype(str)
 
@@ -2724,8 +2704,6 @@ def ques5(Aggre_user, Map_user, Top_user, Top_district,Top_transaction):
     )
     st.plotly_chart(fig2, use_container_width=True)
 
-
-    #  User loyalty Index
 
     st.markdown("### User loyalty Index (App Opens vs Users)")
     fig3 = px.scatter(
